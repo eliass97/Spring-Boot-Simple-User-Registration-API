@@ -1,0 +1,38 @@
+spring:
+  datasource:
+    url: jdbc:h2:file:./target/data/h2_data_test;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;
+    username: h2_user
+    password: h2_pass
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  sql:
+    init:
+      mode: always
+
+  mail:
+    host: test
+    port: 587
+    username: test
+    password: test
+    test-connection: false
+
+scheduling:
+  enabled: false
+
+constants:
+  token-expiration-minutes: 15
+  mail-confirmation-message: "confirmation message %s"
+  mail-deletion-message: "deletion message"
+
+jobs:
+  expired-token-deletion:
+    name: "expiredTokenDeletionJob"
+    cron-expression: "0 0 * * * ?"

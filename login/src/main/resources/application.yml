@@ -1,0 +1,75 @@
+spring:
+  main:
+    banner-mode: off
+
+  datasource:
+    url: jdbc:h2:file:./target/data/h2_data;MODE=PostgreSQL;DATABASE_TO_LOWER=TRUE;
+    username: h2_user
+    password: h2_pass
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    database-platform: org.hibernate.dialect.H2Dialect
+    hibernate:
+      ddl-auto: validate
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.H2Dialect
+
+  sql:
+    init:
+      mode: always
+
+  activemq:
+    broker-url: tcp://localhost:61616
+    user: admin
+    password: admin
+    packages:
+      trust-all: true
+
+  mail:
+    host: your_host
+    port: 587
+    username: your_username
+    password: your_password
+    test-connection: true
+    properties:
+      mail:
+        transport:
+          protocol: smtp
+        smtp:
+          auth: true
+          ssl:
+            trust: "*"
+          starttls:
+            enable: true
+
+  quartz:
+    job-store-type: jdbc
+    jdbc:
+      initialize-schema: never
+    properties:
+      org:
+        quartz:
+          job-store:
+            class: org.quartz.impl.jdbcjobstore.JobStoreTX
+            driverDelegateClass: org.quartz.impl.jdbcjobstore.StdJDBCDelegate
+            tablePrefix: qrtz_
+          data-source:
+            myDS.driver: org.h2.Driver
+            myDS.URL: jdbc:h2:file:./target/data/h2_data;
+            myDS.user: h2_user
+            myDS.password: = h2_pass
+          scheduler:
+            instanceName: demo-scheduler
+            instanceId: AUTO
+
+constants:
+  token-expiration-minutes: 15
+  mail-confirmation-message: "Please confirm your registration by clicking on the link -> http://localhost:8080/api/user/validate?token=%s"
+  mail-deletion-message: "Your account has been deleted"
+
+jobs:
+  expired-token-deletion:
+    name: "expiredTokenDeletionJob"
+    cron-expression: "0 0 * * * ?"
